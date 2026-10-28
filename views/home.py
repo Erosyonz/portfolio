@@ -11,25 +11,6 @@ import plotly.express as px
 
 st.set_page_config(layout="wide")
 
-if "embed_track_url" not in st.session_state:
-    st.session_state["embed_track_url"] = None
-
-MY_TRACK_IDS = [
-    "2w0UbvgPMhAXxz5qakD9Ms",
-    "6VwBbL8CzPiC4QV66ay7oR",
-    "1ixNEKbIZTTZ5LIz3rr9jD",
-    "1ixNEKbIZTTZ5LIz3rr9jD",
-    "2JxPgHghyuG0SKNy8htBWg",
-    "0LWIiBYFmOnkqysugp0VKo",
-    "236P5yLtfnHgTMxevc0q6F",
-]
-
-def get_random_spotify_track(track_ids):
-    if track_ids:
-        random_track_id = random.choice(track_ids)
-        return f"https://open.spotify.com/embed/track/{random_track_id}"
-    return None
-
 
 left_space,con,right_space = st.columns([0.5,3,0.5])
 
@@ -47,16 +28,6 @@ with con:
              "The cloud in 'cloud 9'. "
              "Basically, I am optimistic, persistant, and a dreamer."
             )
-    if st.button("Play Playlist", key="bio_button"):
-            st.session_state["embed_track_url"] = get_random_spotify_track(MY_TRACK_IDS)
-
-    if st.session_state.get("embed_track_url"):
-      st.components.v1.iframe(
-          st.session_state["embed_track_url"], height=152, scrolling=False
-      )
-
-
-
     
 
 st.divider()

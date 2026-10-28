@@ -1,11 +1,37 @@
+import streamlit as st
 import os
 import pandas as pd
-import streamlit as st
+import streamlit.components.v1 as components
+import random
+import pandas as pd
+
+
 
 st.set_page_config(layout="wide")
 
 DATA_FILE = "activity_data.txt"
 RESUME_PATH = "util/Resume.pdf"
+
+
+if "embed_track_url" not in st.session_state:
+    st.session_state["embed_track_url"] = None
+
+MY_TRACK_IDS = [
+    "2w0UbvgPMhAXxz5qakD9Ms",
+    "6VwBbL8CzPiC4QV66ay7oR",
+    "1ixNEKbIZTTZ5LIz3rr9jD",
+    "1ixNEKbIZTTZ5LIz3rr9jD",
+    "2JxPgHghyuG0SKNy8htBWg",
+    "0LWIiBYFmOnkqysugp0VKo",
+    "236P5yLtfnHgTMxevc0q6F",
+]
+
+def get_random_spotify_track(track_ids):
+    if track_ids:
+        random_track_id = random.choice(track_ids)
+        return f"https://open.spotify.com/embed/track/{random_track_id}"
+    return None
+
 
 def load_activity_data():
     """Loads views and likes from file, or sets defaults."""
@@ -50,6 +76,7 @@ contact = st.Page("views/contact.py", title="Contact Me")
 pg = st.navigation([home, skillP, contact], position="sidebar")
 
 with st.sidebar:
+
     tab1, tab2 = st.tabs(["Profile Activity", "Profile Analytics"])
 
     with tab1:
@@ -97,6 +124,18 @@ with st.sidebar:
 
     st.divider()
 
+    button_label = (
+        "Shuffle Music" if st.session_state.get("embed_track_url") else "Play Music"
+    )
+
+    if st.button(button_label, key="bio_button", use_container_width=True):
+        st.session_state["embed_track_url"] = get_random_spotify_track(MY_TRACK_IDS)
+
+    if st.session_state.get("embed_track_url"):
+        st.components.v1.iframe(
+            st.session_state["embed_track_url"], height=152, scrolling=False
+        )
+        
     if os.path.exists(RESUME_PATH):
         with open(RESUME_PATH, "rb") as pdf_file:
             pdf_bytes = pdf_file.read()
