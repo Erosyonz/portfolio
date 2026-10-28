@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from streamlit_carousel import carousel
+
 
 st.set_page_config(layout="wide")
 
